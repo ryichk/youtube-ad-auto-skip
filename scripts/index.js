@@ -33,7 +33,7 @@ const observer = new MutationObserver(async (mutations) => {
   }
 });
 
-const targetElement = document.getElementById('movie_player');
+const targetElement = document.querySelector('body');
 if (targetElement) {
   const config = { attributes: true, childList: true, subtree: true };
   observer.observe(targetElement, config);
