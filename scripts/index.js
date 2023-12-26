@@ -3,7 +3,7 @@ const sleep = (time) => {
 };
 
 const skipAd = () => {
-  // 再生中の動画が広告なのか判断し、広告の場合のみ後続の処理を続行させます
+  // If the video being played is not an ad, the process ends.
   const videoAdsElements = document.getElementsByClassName('ytp-ad-player-overlay');
   if (!videoAdsElements.length) {
     return;
@@ -21,12 +21,12 @@ const skipAd = () => {
 
 const observer = new MutationObserver(async (mutations) => {
   for (const mutation of mutations) {
-    // 広告がある場合のみ処理を実行します
+    // Performs processing only if there is an ad.
     if (mutation.addedNodes.length &&
         mutation.addedNodes[0].parentNode &&
         mutation.addedNodes[0].parentNode.className == 'ytp-ad-text'
     ) {
-      // 広告スキップ後に通常の動画もスキップしてしまう時があるので待ち時間を設けます
+      // After skipping the ad, the normal video may also be skipped, so we will set up a waiting time.
       await sleep(100);
       skipAd();
     }
