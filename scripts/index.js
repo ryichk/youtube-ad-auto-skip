@@ -4,7 +4,7 @@ const sleep = (time) => {
 
 const skipAd = () => {
   // If the video being played is not an ad, the process ends.
-  const videoAdsElements = document.getElementsByClassName('ytp-ad-player-overlay');
+  const videoAdsElements = document.getElementsByClassName('ytp-ad-player-overlay-layout');
   if (!videoAdsElements.length) {
     return;
   }
@@ -13,9 +13,15 @@ const skipAd = () => {
   if (videoElements.length) {
     videoElements[0].currentTime = 999;
   }
-  const clickButton = document.querySelector('.ytp-ad-skip-button-text');
-  if (clickButton) {
-    clickButton.click();
+
+  const skipAdButton = document.querySelector('.ytp-skip-ad-button');
+  if (skipAdButton) {
+    skipAdButton.click();
+  }
+
+  const skipSurveyButton = document.querySelector('.ytp-ad-skip-button-modern')
+  if (skipSurveyButton) {
+    skipSurveyButton.click();
   }
 }
 
