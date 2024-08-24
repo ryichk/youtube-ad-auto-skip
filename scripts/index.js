@@ -25,6 +25,40 @@ const skipAd = () => {
   }
 }
 
+const skipAlert = () => {
+  const errorSupportedRenderers = document.querySelector('yt-playability-error-supported-renderers');
+  if (errorSupportedRenderers) {
+    errorSupportedRenderers.remove();
+    // TODO: I want to be able to skip without reloading.
+    location.reload();
+  }
+}
+
+const addEventListenerOnce = (target, event, handler) => {
+  if (!target[`_${event}_listenerRegistered`]) {
+    target.addEventListener(event, handler);
+    target[`_${event}_listenerRegistered`] = true;
+  }
+}
+
+const playVideo = () => {
+  const videoElements = document.getElementsByTagName('video');
+  if (videoElements.length) {
+    const videoEle = videoElements[0]
+    const handler = async () => {
+      try {
+        await videoEle.play();
+        if (videoEle.currentTime === 0) {
+          videoEle.click();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    addEventListenerOnce(videoEle, 'canplay', handler)
+  }
+}
+
 const observer = new MutationObserver(async (mutations) => {
   for (const mutation of mutations) {
     // Performs processing only if there is an ad.
@@ -35,6 +69,7 @@ const observer = new MutationObserver(async (mutations) => {
       // After skipping the ad, the normal video may also be skipped, so we will set up a waiting time.
       await sleep(100);
       skipAd();
+      skipAlert();
     }
   }
 });
